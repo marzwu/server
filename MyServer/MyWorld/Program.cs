@@ -1,7 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
 namespace MyWorld
 {
@@ -9,8 +6,14 @@ namespace MyWorld
     {
         static void Main(string[] args)
         {
-            Console.WriteLine("hello world");
-            Console.WriteLine("home");
+            try
+            {
+                new TcpServer().start();
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine("error in main: {0}", e);
+            }
         }
     }
 }
