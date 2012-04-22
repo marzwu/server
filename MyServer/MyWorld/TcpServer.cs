@@ -1,15 +1,16 @@
 ﻿using System;
-
-using System.Net.Sockets;
 using System.Net;
+using System.Net.Sockets;
 using System.Threading;
 
 namespace MyWorld
 {
     public class TcpServer
     {
+        private int connectNum;
         public void start()
         {
+            connectNum = 0;
             init();
         }
 
@@ -25,7 +26,7 @@ namespace MyWorld
             }
             catch (Exception e)
             {
-                Console.WriteLine("listener exception: {0}", e);
+                Log.Fatal("listener exception", e);
             }
         }
 
@@ -38,20 +39,23 @@ namespace MyWorld
                 try
                 {
                     newClient = listener.AcceptTcpClient();
+                    //每接收一个客户端连接，就创建一个对应的线程循环接收该客户端发来的信息；
+                    Thread recieveThread = new Thread(ReceiveData);
+                    recieveThread.Start(newClient);
                 }
-                catch
+                catch (Exception e)
                 {
-                    //因此可以利用此异常退出循环  
+                    //因此可以利用此异常退出循环
+                    Log.Fatal("wait to connect: {0}", e);
                     break;
                 }
-                //每接收一个客户端连接，就创建一个对应的线程循环接收该客户端发来的信息；  
-                Thread recieveThread = new Thread(ReceiveData);
-                recieveThread.Start(newClient);
             }
         }
 
         private void ReceiveData(object tcpClient)
         {
+            connectNum++;
+            Console.WriteLine("connest: {0}", connectNum);
             try
             {
                 TcpClient client = tcpClient as TcpClient;
@@ -78,14 +82,15 @@ namespace MyWorld
                     }
                     catch (Exception e)
                     {
-                        Console.WriteLine("SocketException: {0}", e);
+                        Log.Fatal("SocketException: {0}", e);
                     }
                 }
                 Console.WriteLine("user logout");
             }
             catch (Exception e)
             {
-                Console.WriteLine("client exception: {0}", e);
+                Log.Fatal("client exception: {0}", e);
+                connectNum--;
             }
         }
     }

@@ -11,7 +11,18 @@ namespace Client
     {
         static void Main(string[] args)
         {
-            Connect("127.0.0.1", "hello world");
+            //int i = 0;
+            //SetInterval(500, e =>
+            //{
+            //    Connect("127.0.0.1", i.ToString());
+            //    Console.WriteLine(i++);
+            //});
+            for (int i = 0; i < 50; i++)
+            {
+                Connect("127.0.0.1", i.ToString());
+                Console.WriteLine(i);
+            }
+            Console.ReadKey();
         }
         static void Connect(String server, String message)
         {
@@ -64,7 +75,37 @@ namespace Client
             }
 
             Console.WriteLine("Press Enter to continue...");
-            Console.Read();
+            //Console.Read();
+        }
+
+        /// <summary>
+        /// 在指定时间过后执行指定的表达式
+        /// </summary>
+        /// <param name="interval">事件之间经过的时间（以毫秒为单位）</param>
+        /// <param name="action">要执行的表达式</param>
+        public static void SetTimeout(double interval, Action action)
+        {
+            System.Timers.Timer timer = new System.Timers.Timer(interval);
+            timer.Elapsed += delegate(object sender, System.Timers.ElapsedEventArgs e)
+            {
+                timer.Enabled = false;
+                action();
+            };
+            timer.Enabled = true;
+        }
+        /// <summary>
+        /// 在指定时间周期重复执行指定的表达式
+        /// </summary>
+        /// <param name="interval">事件之间经过的时间（以毫秒为单位）</param>
+        /// <param name="action">要执行的表达式</param>
+        public static void SetInterval(double interval, Action<System.Timers.ElapsedEventArgs> action)
+        {
+            System.Timers.Timer timer = new System.Timers.Timer(interval);
+            timer.Elapsed += delegate(object sender, System.Timers.ElapsedEventArgs e)
+            {
+                action(e);
+            };
+            timer.Enabled = true;
         }
     }
 }

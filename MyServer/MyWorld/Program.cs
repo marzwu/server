@@ -1,4 +1,6 @@
 ﻿using System;
+using log4net;
+using System.Reflection;
 
 namespace MyWorld
 {
@@ -6,13 +8,15 @@ namespace MyWorld
     {
         static void Main(string[] args)
         {
+            //ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
             try
             {
                 new TcpServer().start();
+                Log.Info("server started");
             }
             catch (Exception e)
             {
-                Console.WriteLine("error in main: {0}", e);
+                Log.Fatal(e);
             }
         }
     }
