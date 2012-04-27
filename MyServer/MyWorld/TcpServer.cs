@@ -5,6 +5,9 @@ using System.Threading;
 
 namespace MyWorld
 {
+    /// <summary>
+    /// C# synchronous connections up limited is about 2000, occur a out of memory exception
+    /// </summary>
     public class TcpServer
     {
         private int connectNum;

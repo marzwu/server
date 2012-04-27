@@ -17,9 +17,9 @@ namespace Client
             //    Connect("127.0.0.1", i.ToString());
             //    Console.WriteLine(i++);
             //});
-            for (int i = 0; i < 50; i++)
+            for (int i = 0; i < 40; i++)
             {
-                Connect("127.0.0.1", i.ToString());
+                Connect("127.0.0.1", i.ToString()+'\n');
                 Console.WriteLine(i);
             }
             Console.ReadKey();
