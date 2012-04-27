@@ -1,0 +1,9 @@
+#folders
+.metadata/
+bin/
+
+#files
+*.class
+
+#file
+hotspot.log
