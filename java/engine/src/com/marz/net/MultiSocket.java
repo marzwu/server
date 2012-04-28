@@ -7,9 +7,10 @@ import java.io.PrintWriter;
 import java.net.Socket;
 
 /**
+ * java synchronous connections up limited is about 1400, occur a out of memory
+ * exception
+ * 
  * @author Marz
- * @see java synchronous connections up limited is about 1400, occur a out of
- *      memory exception
  */
 public class MultiSocket extends Thread {
 	protected Socket client;
