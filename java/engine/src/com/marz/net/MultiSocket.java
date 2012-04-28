@@ -23,8 +23,8 @@ public class MultiSocket extends Thread {
 		try {
 			connCounts++;
 
-			BufferedReader in = new BufferedReader(new InputStreamReader(client
-					.getInputStream()));
+			BufferedReader in = new BufferedReader(new InputStreamReader(
+					client.getInputStream()));
 			PrintWriter out = new PrintWriter(client.getOutputStream());
 			// Multiple User but can't parallel
 			while (true) {
