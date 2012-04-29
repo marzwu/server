@@ -9,6 +9,18 @@ import java.net.ServerSocket;
  */
 public class EngineSocketStarter {
 	public void start() {
+		boolean bMultiThread = true;
+		if (bMultiThread)
+			startMultiThread();
+		else
+			startSynchronous();
+	}
+
+	private void startSynchronous() {
+		new Thread(new SynchronousServerSocket(3456)).start();
+	}
+
+	private void startMultiThread() {
 		try {
 			ServerSocket ss = new ServerSocket(3456);
 			while (true) {
