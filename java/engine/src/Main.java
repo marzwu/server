@@ -9,11 +9,5 @@ public class Main {
 		System.out.println("hello world");
 
 		new EngineSocketStarter().start();
-
-		// try {
-		// System.in.read();
-		// } catch (IOException e) {
-		// e.printStackTrace();
-		// }
 	}
 }

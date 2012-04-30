@@ -1,4 +1,4 @@
-package com.marz.net;
+package com.marz.net.serverSocket;
 
 import java.io.IOException;
 import java.net.InetSocketAddress;
@@ -11,19 +11,27 @@ import java.nio.charset.Charset;
 import java.util.Iterator;
 
 /**
+ * java asynchronous connections up limited is about 6159 on winXP, server is
+ * still stay alive
+ * 
+ * 4500+, java 1.6_fastdebug, eclipse 3.4<br>
+ * 6159, 2012-5-1 0:10:42, java 1.7.0_04, eclipse 3.7.2
+ * 
  * @author Marz
  * 
  */
-public class SynchronousServerSocket implements Runnable {
+public class AsynchronousServerSocket implements Runnable {
 	private int port;
 	private Selector selector;
 
 	private ByteBuffer readBuff = ByteBuffer.allocate(1024);
 	private ByteBuffer writeBuff;
 
+	private int connCounts;
+
 	/** signal listener */
 
-	public SynchronousServerSocket(int port) {
+	public AsynchronousServerSocket(int port) {
 		this.port = port;
 		try {
 			selector = Selector.open();
@@ -74,7 +82,9 @@ public class SynchronousServerSocket implements Runnable {
 			SocketChannel sc = ssc.accept();
 			sc.configureBlocking(false);
 			sc.register(selector, SelectionKey.OP_READ);
+
 			System.out.println("client connected");
+			System.out.println(String.format("connCounts: %d", connCounts++));
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -88,22 +98,22 @@ public class SynchronousServerSocket implements Runnable {
 			readBuff.flip();
 			String msg = Charset.forName("UTF-8").decode(readBuff).toString();
 			readBuff.clear();
-			
+
 			writeBuff = ByteBuffer.wrap(msg.getBytes("UTF-8"));
 			sc.write(writeBuff);
 			writeBuff.clear();
-			
+
 			System.out.println(msg);
-			
-//			if (msg.equalsIgnoreCase("0")) {
-//				writeBuff = ByteBuffer.wrap("login success".getBytes("UTF-8"));
-//				sc.write(writeBuff);
-//				writeBuff.clear();
-//			} else if (msg.equalsIgnoreCase("1")) {
-//				writeBuff = ByteBuffer.wrap("logout success".getBytes("UTF-8"));
-//				sc.write(writeBuff);
-//				writeBuff.clear();
-//			}
+
+			// if (msg.equalsIgnoreCase("0")) {
+			// writeBuff = ByteBuffer.wrap("login success".getBytes("UTF-8"));
+			// sc.write(writeBuff);
+			// writeBuff.clear();
+			// } else if (msg.equalsIgnoreCase("1")) {
+			// writeBuff = ByteBuffer.wrap("logout success".getBytes("UTF-8"));
+			// sc.write(writeBuff);
+			// writeBuff.clear();
+			// }
 			System.out.println("process completed");
 		} catch (IOException e) {
 			e.printStackTrace();

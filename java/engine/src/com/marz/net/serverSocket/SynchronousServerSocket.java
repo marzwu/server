@@ -1,4 +1,4 @@
-package com.marz.net;
+package com.marz.net.serverSocket;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -7,16 +7,19 @@ import java.io.PrintWriter;
 import java.net.Socket;
 
 /**
- * java synchronous connections up limited is about 1400, occur a out of memory
- * exception
+ * java synchronous connections up limited is about 4825 on winXP, occur a out
+ * of memory exception
+ * 
+ * 1400, java 1.6_fastdebug, eclipse 3.4<br>
+ * 4825, 2012-5-1 0:10:16, java 1.7.0_04, eclipse 3.7.2
  * 
  * @author Marz
  */
-public class MultiSocket extends Thread {
+public class SynchronousServerSocket extends Thread {
 	protected Socket client;
 	public static int connCounts;
 
-	public MultiSocket(Socket s) {
+	public SynchronousServerSocket(Socket s) {
 		client = s;
 	}
 
